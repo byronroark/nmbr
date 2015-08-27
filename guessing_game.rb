@@ -1,25 +1,37 @@
-guess = 0
-tries = 0
-
-number = rand(100).to_i
-puts "What number am I thinking?"
-guess = gets.chomp.to_i
-
-while (true)
-  if guess != number
-    tries += 1
+class Game
+  def initialize
+    @number = rand(100).to_i
   end
 
-  if guess == number
-    puts "Correct! You WIN!"
-    break
+  def matches?(guess)
+    @number == guess
+  end
 
-  elsif guess > number
-    puts "Too high, guess lower!"
-    guess = gets.chomp.to_i
+  def message(guess)
+    if guess.nil?
+      "What number am I thinking?"
+    elsif guess > @number
+      "Too high, guess lower!"
+    elsif guess < @number
+      "Too low, guess higher!"
+    end
+  end
 
-  else guess < number
-    puts "Too low, guess higher!"
-    guess = gets.chomp.to_i
+  def play
+    guess = nil
+
+    5.times do
+      break if matches?(guess)
+      puts message(guess)
+      guess = gets.chomp.to_i
+    end
+
+    if matches?(guess)
+      puts "Correct! You WIN!"
+    else
+      puts "You LOSE :("
+    end
   end
 end
+
+Game.new.play
